@@ -8,15 +8,30 @@
     }
   
     function parsePlaylist() {
-      return [...document.querySelectorAll('[data-testid="MusicTrackRow_Info"]')].map(
-        (row) => {
-          const artist = row.children[0].textContent;
-          const title = row.children[1].textContent;
-          return [artist, title]
-            .map((v) => v.replace(/[\s\n ]+/g, ' ').trim())
-            .join(' - ');
-        },
-      );
+        if (document.querySelectorAll('[data-testid="MusicTrackRow_Info"]').length) {
+            return [...document.querySelectorAll('[data-testid="MusicTrackRow_Info"]')].map(
+                (row) => {
+                  const artist = row.children[0].textContent;
+                  const title = row.children[1].textContent;
+                  return [artist, title]
+                    .map((v) => v.replace(/[\s\n ]+/g, ' ').trim())
+                    .join(' - ');
+                },
+              );
+        } else {
+             return [...document.querySelectorAll('.audio_row__performer_title')].map(
+                (row) => {
+                  const artist = row.querySelector('.audio_row__performers').textContent;
+                  const title = row.querySelector('._audio_row__title a').textContent;
+                  return [artist, title]
+                    .map((v) => v.replace(/[\s\n ]+/g, ' ').trim())
+                    .join(' - ');
+                },
+             );
+        const userTitle = document.querySelector('.ui_tab.ui_tab_sel');
+        return userTitle.textContent.trim();
+        }
+      
     }
   
     function saveToFile(filename, content) {
